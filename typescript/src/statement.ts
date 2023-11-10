@@ -14,7 +14,7 @@ function statement(invoice: Invoice, plays: Plays): string {
 
   for (let perf of invoice.performances) {
     const play = plays[perf.playID];
-    let thisAmount = 0;
+    let thisAmount = calculatePlayAmount(play.type, perf.audience);
     switch (play.type) {
       case "tragedy":
         thisAmount = calculateTragedyAmount(perf.audience);
@@ -38,6 +38,17 @@ function statement(invoice: Invoice, plays: Plays): string {
   result += `Amount owed is ${format(totalAmount / 100)}\n`;
   result += `You earned ${volumeCredits} credits\n`;
   return result;
+}
+
+function calculatePlayAmount(playType: string, audience: number): number {
+  switch (playType) {
+    case "tragedy":
+      return calculateTragedyAmount(audience);
+    case "comedy":
+      return calculateComedyAmount(audience);
+    default:
+      throw new Error(`unknown type: ${playType}`);
+  }
 }
 
 function calculateComedyAmount(audience: number): number {
