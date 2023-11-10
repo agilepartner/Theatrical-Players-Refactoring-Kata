@@ -20,11 +20,7 @@ function statement(invoice: Invoice, plays: Plays): string {
         thisAmount = calculateTragedyAmount(perf.audience);
         break;
       case "comedy":
-        thisAmount = 30000;
-        if (perf.audience > 20) {
-          thisAmount += 10000 + 500 * (perf.audience - 20);
-        }
-        thisAmount += 300 * perf.audience;
+        thisAmount = calculateComedyAmount(perf.audience);
         break;
       default:
         throw new Error(`unknown type: ${play.type}`);
@@ -42,6 +38,15 @@ function statement(invoice: Invoice, plays: Plays): string {
   result += `Amount owed is ${format(totalAmount / 100)}\n`;
   result += `You earned ${volumeCredits} credits\n`;
   return result;
+}
+
+function calculateComedyAmount(audience: number): number {
+  let thisAmount = 30000;
+  if (audience > 20) {
+    thisAmount += 10000 + 500 * (audience - 20);
+  }
+  thisAmount += 300 * audience;
+  return thisAmount;
 }
 
 function calculateTragedyAmount(audience: number): number {
