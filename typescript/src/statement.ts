@@ -1,4 +1,5 @@
 import { Invoice } from "./data-types/Invoice";
+import { Performance } from "./data-types/Performance";
 import { Plays } from "./data-types/Plays";
 
 function statement(invoice: Invoice, plays: Plays): string {
@@ -16,10 +17,7 @@ function statement(invoice: Invoice, plays: Plays): string {
     let thisAmount = 0;
     switch (play.type) {
       case "tragedy":
-        thisAmount = 40000;
-        if (perf.audience > 30) {
-          thisAmount += 1000 * (perf.audience - 30);
-        }
+        thisAmount = calculateTragedyAmount(perf.audience);
         break;
       case "comedy":
         thisAmount = 30000;
@@ -44,6 +42,14 @@ function statement(invoice: Invoice, plays: Plays): string {
   result += `Amount owed is ${format(totalAmount / 100)}\n`;
   result += `You earned ${volumeCredits} credits\n`;
   return result;
+}
+
+function calculateTragedyAmount(audience: number): number {
+  let thisAmount = 40000;
+  if (audience > 30) {
+    thisAmount += 1000 * (audience - 30);
+  }
+  return thisAmount;
 }
 
 export { statement };
