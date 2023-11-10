@@ -1,6 +1,6 @@
 import { Invoice } from "./data-types/Invoice";
 import { Performance } from "./data-types/Performance";
-import { Plays } from "./data-types/Plays";
+import { Plays, PlayType } from "./data-types/Plays";
 
 function statement(invoice: Invoice, plays: Plays): string {
   let totalAmount = 0;
@@ -30,7 +30,7 @@ function statement(invoice: Invoice, plays: Plays): string {
   return result;
 }
 
-function calculatePlayAmount(playType: string, audience: number): number {
+function calculatePlayAmount(playType: PlayType, audience: number): number {
   switch (playType) {
     case "tragedy":
       return calculateTragedyAmount(audience);
