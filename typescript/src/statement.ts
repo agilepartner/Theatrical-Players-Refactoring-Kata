@@ -15,16 +15,6 @@ function statement(invoice: Invoice, plays: Plays): string {
   for (let perf of invoice.performances) {
     const play = plays[perf.playID];
     let thisAmount = calculatePlayAmount(play.type, perf.audience);
-    switch (play.type) {
-      case "tragedy":
-        thisAmount = calculateTragedyAmount(perf.audience);
-        break;
-      case "comedy":
-        thisAmount = calculateComedyAmount(perf.audience);
-        break;
-      default:
-        throw new Error(`unknown type: ${play.type}`);
-    }
     // add volume credits
     volumeCredits += Math.max(perf.audience - 30, 0);
     // add extra credit for every ten comedy attendees
