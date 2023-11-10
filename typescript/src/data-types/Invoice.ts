@@ -1,4 +1,4 @@
-import { Performance } from "./Performance";
+import { Performance } from "./performance";
 
 export type Invoice = {
   customer: string;

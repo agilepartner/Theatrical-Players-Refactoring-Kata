@@ -7,14 +7,24 @@ export type Plays = {
 
 export type PlayType = "tragedy" | "comedy";
 
-export type CalculateAmountMap = Record<PlayType, (audience: number) => number>;
+type AmountCalculator = (audience: number) => number;
+type VolumeCalculator = (audience: number) => number;
+type PlayCalculators = {
+  amountCalculator: AmountCalculator;
+  volumeCalculator: VolumeCalculator;
+};
+export type CalculatorMap = Record<PlayType, PlayCalculators>;
 
-export function calculateAmount(): CalculateAmountMap {
-  return {
-    comedy: calculateComedyAmount,
-    tragedy: calculateTragedyAmount
-  }
-}
+export const getCalculatorsByType: CalculatorMap = {
+  comedy: {
+    amountCalculator: calculateComedyAmount,
+    volumeCalculator: calculateComedyCredit,
+  },
+  tragedy: {
+    amountCalculator: calculateTragedyAmount,
+    volumeCalculator: calculateDefaultCredit,
+  },
+};
 
 function calculateComedyAmount(audience: number): number {
   let thisAmount = 30000;
@@ -33,17 +43,10 @@ function calculateTragedyAmount(audience: number): number {
   return thisAmount;
 }
 
-export type CalculateCreditMap = Record<PlayType, (audience: number) => number>;
-
-export function calculatePlayCredit(): CalculateCreditMap {
-  return {
-    comedy: calculateComedyCredit,
-    tragedy: calculateDefaultCredit
-  }
-}
-
 function calculateComedyCredit(audience: number): number {
-  return calculateDefaultCredit(audience) + winCreditForEvery5Attendees(audience);
+  return (
+    calculateDefaultCredit(audience) + winCreditForEvery5Attendees(audience)
+  );
 }
 
 function winCreditForEvery5Attendees(audience: number) {
