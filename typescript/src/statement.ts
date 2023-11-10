@@ -1,5 +1,7 @@
 import { Invoice } from "./data-types/invoice";
+import { PlayType } from "./data-types/play-type";
 import { Plays } from "./data-types/plays";
+
 
 function statement(invoice: Invoice, plays: Plays) {
   let totalAmount = 0;
@@ -13,17 +15,7 @@ function statement(invoice: Invoice, plays: Plays) {
 
   for (let perf of invoice.performances) {
     const play = plays[perf.playID];
-    let thisAmount = 0;
-    switch (play.type) {
-      case "tragedy":
-        thisAmount = computeTragedyAmount(perf.audience)
-        break;
-      case "comedy":
-        thisAmount = computeComedyAmount(perf.audience)
-        break;
-      default:
-        throw new Error(`unknown type: ${play.type}`);
-    }
+    const thisAmount = computePlayAmount(play.type, perf.audience);
     // add volume credits
     volumeCredits += Math.max(perf.audience - 30, 0);
     // add extra credit for every ten comedy attendees
@@ -36,6 +28,17 @@ function statement(invoice: Invoice, plays: Plays) {
   result += `Amount owed is ${format(totalAmount / 100)}\n`;
   result += `You earned ${volumeCredits} credits\n`;
   return result;
+}
+
+function computePlayAmount(playType: PlayType, audience: number,): number {
+  switch (playType) {
+    case "tragedy":
+      return computeTragedyAmount(audience)
+    case "comedy":
+      return computeComedyAmount(audience)
+    default:
+      throw new Error(`unknown type: ${playType}`);
+  }
 }
 
 function computeTragedyAmount(audience: number): number {
