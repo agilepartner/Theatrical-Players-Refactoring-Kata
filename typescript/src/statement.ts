@@ -16,17 +16,10 @@ function statement(invoice: Invoice, plays: Plays) {
     let thisAmount = 0;
     switch (play.type) {
       case "tragedy":
-        thisAmount = 40000;
-        if (perf.audience > 30) {
-          thisAmount += 1000 * (perf.audience - 30);
-        }
+        thisAmount = computeTragedyAmount(perf.audience)
         break;
       case "comedy":
-        thisAmount = 30000;
-        if (perf.audience > 20) {
-          thisAmount += 10000 + 500 * (perf.audience - 20);
-        }
-        thisAmount += 300 * perf.audience;
+        thisAmount = computeComedyAmount(perf.audience)
         break;
       default:
         throw new Error(`unknown type: ${play.type}`);
@@ -36,14 +29,31 @@ function statement(invoice: Invoice, plays: Plays) {
     // add extra credit for every ten comedy attendees
     if ("comedy" === play.type) volumeCredits += Math.floor(perf.audience / 5);
     // print line for this order
-    result += ` ${play.name}: ${format(thisAmount / 100)} (${
-      perf.audience
-    } seats)\n`;
+    result += ` ${play.name}: ${format(thisAmount / 100)} (${perf.audience
+      } seats)\n`;
     totalAmount += thisAmount;
   }
   result += `Amount owed is ${format(totalAmount / 100)}\n`;
   result += `You earned ${volumeCredits} credits\n`;
   return result;
+}
+
+function computeTragedyAmount(audience: number): number {
+  let thisAmount = 40000;
+  if (audience > 30) {
+    thisAmount += 1000 * (audience - 30);
+  }
+  return thisAmount;
+}
+
+
+function computeComedyAmount(audience: number): number {
+  let thisAmount = 30000;
+  if (audience > 20) {
+    thisAmount += 10000 + 500 * (audience - 20);
+  }
+  thisAmount += 300 * audience;
+  return thisAmount;
 }
 
 export { statement };
