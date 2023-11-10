@@ -1,21 +1,7 @@
-type Plays = {
-  [key: string]: {
-    name: string;
-    type: string;
-  };
-};
+import { Invoice } from "./data-types/Invoice";
+import { Plays } from "./data-types/Plays";
 
-type Performance = {
-  playID: string;
-  audience: number;
-};
-
-type Invoice = {
-  customer: string;
-  performances: Performance[];
-};
-
-function statement(invoice: Invoice, plays: Plays) {
+function statement(invoice: Invoice, plays: Plays): string {
   let totalAmount = 0;
   let volumeCredits = 0;
   let result = `Statement for ${invoice.customer}\n`;
