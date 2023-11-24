@@ -1,5 +1,5 @@
 import { Invoice } from "./data-types/Invoice";
-import { Performance } from "./data-types/Performance";
+import { Performance, PerformanceData } from "./data-types/Performance";
 import {
   Plays,
   PlayType,
@@ -21,18 +21,14 @@ function statement(invoice: Invoice, plays: Plays): string {
     );
   return getOutput(invoice.customer, resultAndTotalAmount);
 }
-type PerformanceData = {
-  result: string;
-  amount: number;
-  credit: number;
-};
 
 function getOutput(customer: string, performanceData: PerformanceData): string {
-  let result = `Statement for ${customer}\n`;
-  result += performanceData.result;
-  result += `Amount owed is ${formattedAmount(performanceData.amount)}\n`;
-  result += `You earned ${performanceData.credit} credits\n`;
-  return result;
+  return (
+    `Statement for ${customer}\n` +
+    performanceData.result +
+    `Amount owed is ${formattedAmount(performanceData.amount)}\n` +
+    `You earned ${performanceData.credit} credits\n`
+  );
 }
 
 function getPerformanceData(
