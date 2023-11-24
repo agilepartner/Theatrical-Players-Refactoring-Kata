@@ -6,7 +6,7 @@ import {
   calculateAmount,
   calculatePlayCredit,
 } from "./data-types/Plays";
-import { format } from "./data-types/format";
+import { formattedAmount } from "./data-types/format";
 
 function statement(invoice: Invoice, plays: Plays): string {
   function toTotal(performance: Performance, plays: Plays) {
@@ -15,7 +15,7 @@ function statement(invoice: Invoice, plays: Plays): string {
     return {
       amount: amount,
       credit: calculatePlayCredit()[play.type](performance.audience),
-      resultString: ` ${play.name}: ${format(amount / 100)} (${
+      resultString: ` ${play.name}: ${formattedAmount(amount)} (${
         performance.audience
       } seats)\n`,
     };
@@ -34,7 +34,7 @@ function statement(invoice: Invoice, plays: Plays): string {
 
   let result = `Statement for ${invoice.customer}\n`;
   result += resultAndTotalAmount.resultString;
-  result += `Amount owed is ${format(resultAndTotalAmount.amount / 100)}\n`;
+  result += `Amount owed is ${formattedAmount(resultAndTotalAmount.amount)}\n`;
   result += `You earned ${resultAndTotalAmount.credit} credits\n`;
   return result;
 }

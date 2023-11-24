@@ -1,5 +1,9 @@
-export const format = new Intl.NumberFormat("en-US", {
+const format = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
   minimumFractionDigits: 2,
 }).format;
+
+export function formattedAmount(amount: number): string {
+  return format(amount / 100);
+}
