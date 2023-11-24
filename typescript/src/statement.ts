@@ -6,14 +6,9 @@ import {
   calculateAmount,
   calculatePlayCredit,
 } from "./data-types/Plays";
+import { format } from "./data-types/format";
 
 function statement(invoice: Invoice, plays: Plays): string {
-  const format = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-  }).format;
-
   function toTotal(performance: Performance, plays: Plays) {
     const play = plays[performance.playID];
     const amount = calculateAmount()[play.type](performance.audience);
