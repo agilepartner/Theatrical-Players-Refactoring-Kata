@@ -10,7 +10,8 @@
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
     "outDir": "./dist/tsc/",
-    "types": ["node", "jest"]
+    "types": ["node", "jest"],
+    "noImplicitOverride": true,
   },
   "include": ["**/*.ts"],
   "exclude": ["node_modules"]
